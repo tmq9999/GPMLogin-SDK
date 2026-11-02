@@ -1,0 +1,6 @@
+{
+  "defaultBranch": "main",
+  "pdg": true,
+  "skipSkills": true,
+  "stats": false
+}

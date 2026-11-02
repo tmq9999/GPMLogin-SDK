@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gpmlogin-sdk"
+version = "0.1.0"
+description = "Typed sync and async Python client for the GPM Login local HTTP API (experimental, pre-1.0)."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["httpx>=0.28.1,<1"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+
+[project.optional-dependencies]
+playwright = ["playwright>=1.64.1,<2"]
+dev = [
+    "build>=1.6.1,<2",
+    "mypy>=2.4.1,<3",
+    "playwright>=1.64.1,<2",
+    "pytest>=9.2,<10",
+    "pytest-asyncio>=1.4.1,<2",
+    "ruff>=0.17.3,<0.18",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+gpmlogin_sdk = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "strict"
+asyncio_default_fixture_loop_scope = "function"
+filterwarnings = ["error"]
+markers = [
+    "live: talks to a real GPM Login instance; opt-in via GPM_RUN_LIVE=1",
+    "live_mutations: creates and changes a profile it owns; needs GPM_RUN_LIVE_MUTATIONS=1",
+    "live_start: starts and stops a real browser; needs GPM_RUN_LIVE_START=1",
+    "live_shared_mutations: creates group/proxy records; needs GPM_RUN_LIVE_SHARED_MUTATIONS=1",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+extend-exclude = ["docs", "*.md", ".superpowers"]
+force-exclude = true
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "ASYNC"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["SIM117"]
+
+[tool.mypy]
+files = ["src/gpmlogin_sdk"]
+strict = true
+python_version = "3.11"
